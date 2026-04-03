@@ -31,11 +31,19 @@ Play Go (Baduk/Weiqi) against an AI opponent &mdash; entirely in your browser. N
 | Concern | Solution |
 |---|---|
 | Game logic | Pure vanilla JS &mdash; liberties, capture, ko, suicide, scoring |
-| AI engine | Monte Carlo Tree Search with fast numeric playout board (Int8Array) |
+| AI engine | Monte Carlo Tree Search with fast numeric playout board |
 | Board rendering | Canvas with radial-gradient stones, DPI awareness |
 | Correspondence | URL hash &mdash; compressed board state in fragment |
 | Dependencies | **Zero** |
 | Build step | **None** &mdash; open `index.html`, it works |
+
+### Why the AI is fast
+
+MCTS needs thousands of random game simulations (playouts) per move. Running those through the full rules engine &mdash; with DFS group searches, string-keyed Sets, and board hashing &mdash; was far too slow.
+
+The fix: a separate `FastBoard` playout engine that uses `Int8Array` for the board, pre-allocated scratch buffers (no GC pressure), inline capture/suicide checks, and simple ko tracking via a single forbidden-point index. It shuffles empty intersections and tries random moves directly instead of pre-computing all legal moves.
+
+Result: **~500ms for 2000 playouts on 9&times;9** &mdash; the full rules engine is only used for the real game and tree expansion, never during simulation.
 
 ## Part of the NakliTechie series
 
