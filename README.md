@@ -45,6 +45,12 @@ The fix: a separate `FastBoard` playout engine that uses `Int8Array` for the boa
 
 Result: **~500ms for 2000 playouts on 9&times;9** &mdash; the full rules engine is only used for the real game and tree expansion, never during simulation.
 
+## Palette
+
+Coloured with **`japan-02 · 生成り KINARI`** — Edo merchant ledger, washi paper. Warm cream body, kaya-wood goban, classic black-and-white stones, Edo-navy action accent. The colour of a 19th-century Japanese paper-and-wood game room.
+
+Palette pulled from [**Rangrez**](https://github.com/NakliTechie/rangrez), the global colour-palette library that backs all NakliTechie projects.
+
 ## Part of the NakliTechie series
 
 Browser-native tools &mdash; no server, no API keys, no data leaving the device.

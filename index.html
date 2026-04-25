@@ -6,12 +6,36 @@
   <meta name="author" content="Chirag Patnaik">
   <title>KoLocal — Browser Go</title>
   <style>
+    /* Rangrez · japan-02 · 生成り KINARI — Edo merchant ledger, washi paper */
+    :root {
+      --body: #f3ecdc;
+      --panel: #faf4e6;
+      --row: #ebe2cf;
+      --line: #d8c8a0;
+      --ink: #3a2a1a;
+      --ink-mid: #5a4028;
+      --ink-soft: #7a5a2a;
+      --ink-mute: #a8895a;
+      --brand: #9b4a22;
+      --brand-soft: #f4d8c8;
+      --act: #2a3a5a;
+      --act-hover: #18243c;
+      --act-tint: #e0e4ec;
+      --ok: #5a6b2a;
+      --ok-soft: #e6efd4;
+      --warn: #c08018;
+      --board-wood: #dcc28a;
+      --stone-black: #1a1a1a;
+      --stone-black-edge: #4a4a4a;
+      --stone-white: #f0f0f0;
+      --stone-white-edge: #c0c0c0;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4f8;
-      color: #2d3748;
+      background: var(--body);
+      color: var(--ink);
       padding: 24px 16px;
       min-height: 100vh;
     }
@@ -26,7 +50,7 @@
       margin-bottom: 20px;
     }
 
-    h1 { font-size: 1.5rem; font-weight: 700; color: #1a202c; }
+    h1 { font-size: 1.5rem; font-weight: 700; color: var(--ink); }
 
     .badge {
       border-radius: 20px;
@@ -36,13 +60,13 @@
       border: 1px solid;
       transition: background 0.4s, border-color 0.4s, color 0.4s;
     }
-    .badge.your-turn { background: #e6fffa; border-color: #81e6d9; color: #234e52; }
-    .badge.ai-turn   { background: #fffbeb; border-color: #f6e05e; color: #744210; }
-    .badge.game-over { background: #ebf4ff; border-color: #667eea; color: #4c51bf; }
+    .badge.your-turn { background: var(--ok-soft); border-color: var(--ok); color: #2a4014; }
+    .badge.ai-turn   { background: var(--brand-soft); border-color: var(--warn); color: #744210; }
+    .badge.game-over { background: var(--act-tint); border-color: var(--act); color: var(--act-hover); }
 
     /* ── Card ── */
     .card {
-      background: white;
+      background: var(--panel);
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(0,0,0,0.08);
       overflow: hidden;
@@ -54,7 +78,7 @@
       padding: 24px;
       display: flex;
       justify-content: center;
-      background: white;
+      background: var(--panel);
     }
 
     #board {
@@ -73,27 +97,27 @@
       align-items: center;
       gap: 8px;
       padding: 12px 16px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
+      background: var(--row);
+      border-top: 1px solid var(--line);
       flex-wrap: wrap;
     }
 
-    .controls label { font-size: 0.8rem; color: #718096; }
+    .controls label { font-size: 0.8rem; color: var(--ink-soft); }
 
     select {
       font-size: 0.88rem;
-      color: #2d3748;
-      border: 1px solid #e2e8f0;
+      color: var(--ink);
+      border: 1px solid var(--line);
       border-radius: 6px;
       padding: 5px 8px;
-      background: white;
+      background: var(--panel);
       cursor: pointer;
     }
-    select:focus { outline: none; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); border-color: #667eea; }
+    select:focus { outline: none; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); border-color: var(--act); }
 
     .btn {
-      background: #667eea;
-      color: white;
+      background: var(--act);
+      color: var(--panel);
       border: none;
       border-radius: 8px;
       padding: 9px 22px;
@@ -102,7 +126,7 @@
       cursor: pointer;
       transition: background 0.15s, opacity 0.15s;
     }
-    .btn:hover { background: #5a67d8; }
+    .btn:hover { background: var(--act-hover); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .btn-icon {
@@ -110,12 +134,12 @@
       border: none;
       border-radius: 6px;
       font-size: 0.78rem;
-      color: #718096;
+      color: var(--ink-soft);
       padding: 4px 8px;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
-    .btn-icon:hover { background: #e2e8f0; color: #2d3748; }
+    .btn-icon:hover { background: var(--line); color: var(--ink); }
 
     .spacer { flex: 1; }
 
@@ -124,13 +148,13 @@
       display: flex;
       gap: 20px;
       padding: 10px 16px;
-      background: #f8fafc;
-      border-top: 1px solid #e2e8f0;
+      background: var(--row);
+      border-top: 1px solid var(--line);
       font-size: 0.82rem;
-      color: #718096;
+      color: var(--ink-soft);
       flex-wrap: wrap;
     }
-    .status-bar span { font-weight: 500; color: #2d3748; }
+    .status-bar span { font-weight: 500; color: var(--ink); }
 
     /* ── Captured stones strip ── */
     .captures {
@@ -138,11 +162,11 @@
       align-items: center;
       gap: 4px;
       padding: 8px 16px;
-      background: white;
-      border-top: 1px solid #e2e8f0;
+      background: var(--panel);
+      border-top: 1px solid var(--line);
       min-height: 36px;
     }
-    .cap-label { font-size: 0.75rem; color: #a0aec0; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-right: 4px; }
+    .cap-label { font-size: 0.75rem; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-right: 4px; }
     .cap-dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
     .cap-dot.b-stone { background: #1a1a1a; border: 1px solid #4a4a4a; }
     .cap-dot.w-stone { background: #f0f0f0; border: 1px solid #c0c0c0; }
@@ -163,7 +187,7 @@
     .modal-backdrop.open { opacity: 1; pointer-events: all; }
 
     .modal {
-      background: white;
+      background: var(--panel);
       border-radius: 16px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.18);
       width: 100%;
@@ -178,8 +202,8 @@
     .modal-header {
       display: flex;
       align-items: stretch;
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
+      background: var(--row);
+      border-bottom: 1px solid var(--line);
     }
 
     .modal-tabs { display: flex; flex: 1; }
@@ -191,18 +215,18 @@
       padding: 13px 18px;
       font-size: 0.88rem;
       font-weight: 500;
-      color: #718096;
+      color: var(--ink-soft);
       cursor: pointer;
       transition: color 0.15s, border-color 0.15s;
     }
-    .tab.active { color: #667eea; border-bottom-color: #667eea; }
-    .tab:hover:not(.active) { color: #2d3748; }
+    .tab.active { color: var(--act); border-bottom-color: var(--act); }
+    .tab:hover:not(.active) { color: var(--ink); }
 
     .modal-close {
       background: none;
       border: none;
       font-size: 1rem;
-      color: #a0aec0;
+      color: var(--ink-mute);
       cursor: pointer;
       padding: 8px 14px;
       margin: 6px 8px;
@@ -210,7 +234,7 @@
       line-height: 1;
       transition: color 0.15s, background 0.15s;
     }
-    .modal-close:hover { background: #e2e8f0; color: #2d3748; }
+    .modal-close:hover { background: var(--line); color: var(--ink); }
 
     .modal-body { padding: 20px; }
 
@@ -220,7 +244,7 @@
     .modal-body h3 {
       font-size: 0.72rem;
       font-weight: 600;
-      color: #a0aec0;
+      color: var(--ink-mute);
       text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: 12px;
@@ -237,14 +261,14 @@
       gap: 10px;
       align-items: flex-start;
       font-size: 0.88rem;
-      color: #2d3748;
+      color: var(--ink);
       line-height: 1.5;
     }
     .rule-icon { flex-shrink: 0; font-size: 1rem; line-height: 1.4; }
 
     .modal-body p {
       font-size: 0.88rem;
-      color: #2d3748;
+      color: var(--ink);
       line-height: 1.65;
       margin-bottom: 12px;
     }
@@ -257,8 +281,8 @@
       bottom: 48px;
       left: 50%;
       transform: translateX(-50%) translateY(16px);
-      background: #2d3748;
-      color: white;
+      background: var(--ink);
+      color: var(--panel);
       padding: 8px 16px;
       border-radius: 8px;
       font-size: 0.82rem;
@@ -286,7 +310,7 @@
       white-space: nowrap;
     }
     .footer-nav a {
-      color: #0366d6;
+      color: var(--act);
       text-decoration: none;
       transition: opacity 0.2s;
     }
@@ -817,12 +841,12 @@ class GoBoard {
     this.ctx.clearRect(0, 0, w, w);
 
     // Board background
-    this.ctx.fillStyle = '#dcb35c';
+    this.ctx.fillStyle = '#dcc28a';
     this.ctx.fillRect(0, 0, w, w);
 
     // Grid lines
     this.ctx.beginPath();
-    this.ctx.strokeStyle = '#000';
+    this.ctx.strokeStyle = '#3a2a1a';
     this.ctx.lineWidth = 1;
     for (let i = 0; i < this.size; i++) {
       const p = this.padding + i * this.cellSize;
@@ -835,7 +859,7 @@ class GoBoard {
 
     // Star points
     const stars = STAR_POINTS[this.size] || [];
-    this.ctx.fillStyle = '#000';
+    this.ctx.fillStyle = '#3a2a1a';
     stars.forEach(([sx, sy]) => {
       const px = this.padding + sx * this.cellSize;
       const py = this.padding + sy * this.cellSize;
@@ -1484,7 +1508,7 @@ function renderCaptures() {
   }
   if (game.captures.black === 0 && game.captures.white === 0) {
     const none = document.createElement('span');
-    none.style.cssText = 'font-size:0.78rem;color:#a0aec0;';
+    none.style.cssText = 'font-size:0.78rem;color:var(--ink-mute);';
     none.textContent = 'none yet';
     bar.appendChild(none);
   }
